@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Кросворд</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f5f5f5;
+        }
+        .crossword {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .row {
+            display: flex;
+            gap: 5px;
+        }
+        input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Кросворд: 4 школа м. Козятин</h1>
+
+<div class="crossword">
+    <div class="row" id="row1"></div>
+    <div class="row" id="row2"></div>
+    <div class="row" id="row3"></div>
+</div>
+
+<div style="margin-top:30px;">
+    <p><b>1.</b> Заучка з тату герб України</p>
+    <p><b>2.</b> Фамілія Ігоря Михайловича</p>
+    <p><b>3.</b> Фамілія Насті</p>
+</div>
+
+<button onclick="checkAnswers()">Перевірити</button>
+<p id="result"></p>
+
+<script>
+// правильні відповіді (НЕ видно користувачу)
+const answers = [
+    "КОВАЛЬОВА",
+    "ПАЦАНЮРА",
+    "АААААААААА" // 10 букв
+];
+
+// створення рядків
+function createRow(id, length) {
+    const row = document.getElementById(id);
+    for (let i = 0; i < length; i++) {
+        let input = document.createElement("input");
+        input.maxLength = 1;
+        input.dataset.row = id;
+        input.dataset.col = i;
+        row.appendChild(input);
+    }
+}
+
+// створюємо клітинки
+createRow("row1", answers[0].length);
+createRow("row2", answers[1].length);
+createRow("row3", 10); // ЗАВЖДИ 10
+
+function checkAnswers() {
+    let correct = true;
+
+    ["row1","row2","row3"].forEach((rowId, r) => {
+        let inputs = document.querySelectorAll(`#${rowId} input`);
+        inputs.forEach((input, i) => {
+            if (input.value.toUpperCase() !== answers[r][i]) {
+                correct = false;
+            }
+        });
+    });
+
+    document.getElementById("result").innerText =
+        correct ? "✅ Все правильно!" : "❌ Є помилки!";
+}
+</script>
+
+</body>
+</html>

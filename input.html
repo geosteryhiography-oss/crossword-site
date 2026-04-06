@@ -2,30 +2,15 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Кросворд</title>
+    <title>Кросворд - 4 школа Козятин</title>
     <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            background: #f5f5f5;
-        }
-        .crossword {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        .row {
-            display: flex;
-            gap: 5px;
-        }
-        input {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            font-size: 20px;
-        }
+        body { font-family: Arial; text-align: center; background: #f5f5f5; }
+        h1 { margin-top: 20px; }
+        .crossword { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
+        .row { display: flex; gap: 5px; }
+        input { width: 40px; height: 40px; text-align: center; font-size: 20px; }
+        .clues { margin-top: 30px; font-size: 18px; }
+        button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -38,7 +23,7 @@
     <div class="row" id="row3"></div>
 </div>
 
-<div style="margin-top:30px;">
+<div class="clues">
     <p><b>1.</b> Заучка з тату герб України</p>
     <p><b>2.</b> Фамілія Ігоря Михайловича</p>
     <p><b>3.</b> Фамілія Насті</p>
@@ -48,44 +33,40 @@
 <p id="result"></p>
 
 <script>
-// правильні відповіді (НЕ видно користувачу)
+// правильні відповіді (не показуються користувачу)
 const answers = [
     "КОВАЛЬОВА",
     "ПАЦАНЮРА",
-    "АААААААААА" // 10 букв
+    "AAAAAAAAAA" // 10 букв для Насті
 ];
 
-// створення рядків
-function createRow(id, length) {
-    const row = document.getElementById(id);
+// функція створення рядів
+function createRow(rowId, length) {
+    const row = document.getElementById(rowId);
     for (let i = 0; i < length; i++) {
-        let input = document.createElement("input");
-        input.maxLength = 1;
-        input.dataset.row = id;
+        const input = document.createElement("input");
+        input.setAttribute("maxlength", "1");
+        input.dataset.row = rowId;
         input.dataset.col = i;
         row.appendChild(input);
     }
 }
 
-// створюємо клітинки
+// створюємо ряди
 createRow("row1", answers[0].length);
 createRow("row2", answers[1].length);
-createRow("row3", 10); // ЗАВЖДИ 10
+createRow("row3", 10); // третій ряд завжди 10 клітинок
 
+// перевірка
 function checkAnswers() {
     let correct = true;
-
-    ["row1","row2","row3"].forEach((rowId, r) => {
-        let inputs = document.querySelectorAll(`#${rowId} input`);
-        inputs.forEach((input, i) => {
-            if (input.value.toUpperCase() !== answers[r][i]) {
-                correct = false;
-            }
+    ["row1","row2","row3"].forEach((rowId,r)=>{
+        const inputs = document.querySelectorAll(`#${rowId} input`);
+        inputs.forEach((input,i)=>{
+            if (input.value.toUpperCase() !== answers[r][i]) correct=false;
         });
     });
-
-    document.getElementById("result").innerText =
-        correct ? "✅ Все правильно!" : "❌ Є помилки!";
+    document.getElementById("result").innerText = correct ? "✅ Все правильно!" : "❌ Є помилки!";
 }
 </script>
 
